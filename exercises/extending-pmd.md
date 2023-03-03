@@ -23,3 +23,10 @@ Use your rule with different projects and describe you findings below. See the [
 
 ## Answer
 
+I've tested my [ruleset](../code/Exercise3/pmd-ruleset.xml) on Apach Commons Lang and found 80 exceptions to the rule.
+
+So yes, this is an easy rule to overlook, especially considering an 
+```java
+if () { ... } else if() { ... }
+```
+already imbricate two ifs and is often use.

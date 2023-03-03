@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset name="My ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+         
+  <description>
+    Nested if's ruleset
+  </description>
+
+  <rule name="AvoidComplexCode" language="java" 
+        message="Avoid using three or more nested if statements"
+        class="net.sourceforge.pmd.lang.rule.XPathRule">
+    <description>
+      This rule detects the use of three or more nested if statements in Java programs.
+    </description>
+    <example>
+      <![CDATA[
+        if (...) {
+            ...
+            if (...) {
+                ...
+                if (...) {
+                    ....
+                }
+            }
+
+        }
+      ]]>
+    </example>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath">
+        <value>//IfStatement[descendant::IfStatement[count(.//IfStatement) &gt;= 2]]</value>
+      </property>
+    </properties>
+  </rule>
+
+</ruleset>
+

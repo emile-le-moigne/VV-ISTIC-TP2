@@ -1,64 +1,40 @@
-# Code of your exercise
+package fr.istic.vv.tcc_calculator;
 
-```java
-public class TCCAnalyzer {
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-    public static void main(String[] args) throws IOException {
+import org.w3c.dom.Node;
 
-        if (args.length == 0) {
-            System.err.println("Should provide the path to the source code");
-            System.exit(1);
-        }
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.SimpleName;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
-        File folder = new File(args[0]);
-        if (!folder.exists() || !folder.isDirectory() || !folder.canRead()) {
-            System.err.println("Provide a path to an existing readable directory");
-            System.exit(2);
-        }
-
-        // Parse the java files
-
-        List<File> javaFiles = new ArrayList<>();
-
-        File[] files = folder.listFiles();
-
-        for (File file : files) {
-            if (file.isFile() && file.getName().endsWith(".java")) {
-                javaFiles.add(file);
-            }
-        }
-        File tableFile = new File(args[0] + "/" + "tccValues.md");
-        FileWriter tableWriter = new FileWriter(tableFile);
-        tableWriter.write("| Class Name | N | NP | NDC | TCC |\n");
-        tableWriter.write("| ---------- | --------- | --------- | --------- | --------- |\n");
-        // Compute the TCC for each class
-        javaFiles.forEach(
-                javaFile -> {
-                    try {
-
-                        File graphFile = new File(args[0] + "/" + javaFile.getName() + "Graph.dot");
-                        FileWriter graphWriter = new FileWriter(graphFile);
-
-                        TCCCalculator.calculateTCC(javaFile, graphWriter, tableWriter);
-                        graphWriter.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-        tableWriter.close();
-    }
-}
-```
-
-```java
 public class TCCCalculator {
 
     /*
      * NP = maximum number of possible connections
      * = N * (N − 1) / 2 where N is the number of methods
-     *
+     * 
      * NDC = number of direct connections (number of edges in the connection graph)
-     *
+     * 
      * Tight class cohesion TCC = NDC / NP
      */
 
@@ -150,4 +126,3 @@ public class TCCCalculator {
         return method1Name + " -- " + method2Name + "[label=\"" + variablesLabel + "\"];\n";
     }
 }
-```
